@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestão - Final</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --bg: #ffffff;
+            --text: #2c3e50;
+        }
+
+        [data-theme="dark"] {
+            --primary: #34495e;
+            --secondary: #2980b9;
+            --bg: #1a1a1a;
+            --text: #ecf0f1;
+        }
+
+        [data-theme="high-contrast"] {
+            --primary: #000000;
+            --secondary: #ffff00;
+            --bg: #ffffff;
+            --text: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 10px;
+            background: var(--secondary);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+        }
+
+        .skip-link:focus {
+            top: 10px;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a.active {
+            background: var(--secondary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--bg);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .error {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .users-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .user-card {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main" class="skip-link">Pular para conteúdo</a>
+
+    <header>
+        <h1>🚀 Sistema Gestão</h1>
+        <nav>
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#users" class="nav-link">Usuários</a>
+            <a href="#add" class="nav-link">Adicionar</a>
+        </nav>
+        <div class="controls">
+            <button onclick="toggleTheme()">🌙 Tema</button>
+            <button onclick="toggleContrast()">🎨 Contraste</button>
+        </div>
+    </header>
+
+    <main id="main">
+        <!-- Página Home -->
+        <section id="home-page" class="page active">
+            <div class="card">
+                <h2>Bem-vindo</h2>
+                <p>Sistema com acessibilidade e versionamento.</p>
+            </div>
+        </section>
+
+        <!-- Página Usuários -->
+        <section id="users-page" class="page">
+            <div class="card">
+                <h2>Usuários</h2>
+                <div id="users-list" class="users-grid"></div>
+            </div>
+        </section>
+
+        <!-- Página Adicionar -->
+        <section id="add-page" class="page">
+            <div class="card">
+                <h2>Adicionar Usuário</h2>
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="name">Nome *</label>
+                        <input type="text" id="name" required>
+                        <div class="error" id="name-error">Nome precisa de 3+ caracteres</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                        <div class="error" id="email-error">Email inválido</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dept">Departamento *</label>
+                        <select id="dept" required>
+                            <option value="">Selecione</option>
+                            <option value="TI">TI</option>
+                            <option value="RH">RH</option>
+                        </select>
+                        <div class="error" id="dept-error">Selecione um departamento</div>
+                    </div>
+
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>v1.0.0 - WCAG 2.1 AA</p>
+    </footer>
+
+    <script>
+        // Sistema de Rotas
+        class Router {
+            constructor() {
+                this.routes = {
+                    'home': 'home-page',
+                    'users': 'users-page',
+                    'add': 'add-page'
+                };
+                this.init();
+            }
+
+            init() {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const route = e.target.getAttribute('href').substring(1);
+                        this.navigate(route);
+                    });
+                });
+                this.navigate('home');
+            }
+
+            navigate(route) {
+                // Atualizar navegação
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                document.querySelector(`[href="#${route}"]`).classList.add('active');
+
+                // Mostrar página
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(this.routes[route]).classList.add('active');
+
+                // Ações específicas
+                if (route === 'users') UserManager.renderUsers();
+            }
+        }
+
+        // Validação de Formulários
+        class FormValidator {
+            static init() {
+                const form = document.getElementById('user-form');
+                
+                // Validação em tempo real
+                ['name', 'email', 'dept'].forEach(field => {
+                    document.getElementById(field).addEventListener('blur', (e) => {
+                        this.validateField(e.target);
+                    });
+                });
+
+                // Submit
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (this.validateForm()) {
+                        UserManager.addUser(this.getFormData());
+                        form.reset();
+                        router.navigate('users');
+                    }
+                });
+            }
+
+            static validateField(field) {
+                const value = field.value.trim();
+                let isValid = true;
+
+                switch(field.id) {
+                    case 'name':
+                        isValid = value.length >= 3;
+                        break;
+                    case 'email':
+                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                        break;
+                    case 'dept':
+                        isValid = value !== '';
+                        break;
+                }
+
+                this.showError(field.id, isValid);
+                return isValid;
+            }
+
+            static validateForm() {
+                let isValid = true;
+                ['name', 'email', 'dept'].forEach(field => {
+                    if (!this.validateField(document.getElementById(field))) {
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            }
+
+            static showError(fieldId, isValid) {
+                const error = document.getElementById(`${fieldId}-error`);
+                if (isValid) {
+                    error.classList.remove('show');
+                } else {
+                    error.classList.add('show');
+                }
+            }
+
+            static getFormData() {
+                return {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    dept: document.getElementById('dept').value,
+                    id: Date.now()
+                };
+            }
+        }
+
+        // Gerenciar Usuários
+        class UserManager {
+            static getUsers() {
+                return JSON.parse(localStorage.getItem('users') || '[]');
+            }
+
+            static saveUsers(users) {
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            static addUser(user) {
+                const users = this.getUsers();
+                users.push(user);
+                this.saveUsers(users);
+                this.renderUsers();
+            }
+
+            static deleteUser(id) {
+                const users = this.getUsers().filter(user => user.id !== id);
+                this.saveUsers(users);
+                this.renderUsers();
+            }
+
+            static renderUsers() {
+                const container = document.getElementById('users-list');
+                const users = this.getUsers();
+
+                if (users.length === 0) {
+                    container.innerHTML = '<p>Nenhum usuário</p>';
+                    return;
+                }
+
+                container.innerHTML = users.map(user => `
+                    <div class="user-card">
+                        <h3>${user.name}</h3>
+                        <p>${user.email}</p>
+                        <p>${user.dept}</p>
+                        <button onclick="UserManager.deleteUser(${user.id})">Excluir</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Acessibilidade
+        function toggleTheme() {
+            const current = document.body.getAttribute('data-theme');
+            document.body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+
+        function toggleContrast() {
+            const current = document.body.getAttribute('data-theme');
+            document.body.setAttribute('data-theme', current === 'high-contrast' ? 'light' : 'high-contrast');
+        }
+
+        // Inicializar
+        const router = new Router();
+        FormValidator.init();
+        UserManager.renderUsers();
+    </script>
+</body>
+</html>
